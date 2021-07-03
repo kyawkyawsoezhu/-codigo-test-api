@@ -8,8 +8,9 @@ createConnection().then(async connection => {
     await Promise.all(range(5).map(async () => {
         await connection.manager.save(connection.manager.create(User, {
             name: faker.name.findName(),
+            username: faker.unique(faker.internet.userName),
+            password: 'password',
             phoneNumber: faker.unique(faker.phone.phoneNumber),
-            password: 'password'
         }))
     }))
 

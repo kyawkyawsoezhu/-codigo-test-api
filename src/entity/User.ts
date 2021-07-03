@@ -11,10 +11,13 @@ export class User {
     name: string;
 
     @Column({ unique: true })
-    phoneNumber: string;
+    username: string;
 
     @Column()
     password: string;
+
+    @Column({ unique: true })
+    phoneNumber: string;
 
     @OneToMany(() => Order, order => order.user)
     orders: Order[]
