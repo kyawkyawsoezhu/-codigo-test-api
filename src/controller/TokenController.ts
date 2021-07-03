@@ -2,25 +2,29 @@ import { getRepository } from "typeorm";
 import { NextFunction, Request, Response } from "express";
 import { User } from "../entity/User";
 import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
 
 export class TokenController {
 
     private userRepository = getRepository(User);
-    
+
     // generate token
     async save(request: Request, response: Response, next: NextFunction) {
-        const credentials = {
-            username: request.body.username,
-            password: request.body.password
-        }
 
-        const user = await this.userRepository.findOne(credentials);
+        const user = await this.userRepository.findOne({ username: request.body.username });
         if (!user) {
-            response.sendStatus(404);
+            response.sendStatus(401);
+            return;
         }
 
-        const accessToken = jwt.sign({ username: credentials.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2m' });
-        const refreshToken = jwt.sign({ username: credentials.username }, process.env.REFRESH_TOKEN_SECRET);
+        const passwordMatch = await bcrypt.compare(request.body.password, user.password);
+        if (!passwordMatch) {
+            response.sendStatus(401);
+            return;
+        }
+
+        const accessToken = jwt.sign({ username: request.body.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2m' });
+        const refreshToken = jwt.sign({ username: request.body.username }, process.env.REFRESH_TOKEN_SECRET);
 
         response.json({ accessToken, refreshToken })
     }
@@ -31,12 +35,14 @@ export class TokenController {
         const token = authHeader && authHeader.split(' ')[1];
 
         if (token == null) {
-            request.json({ message: 'Invalid refresh token' });
+            response.json({ message: 'Invalid refresh token' });
+            return;
         }
 
         jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
             if (err) {
                 response.json({ message: 'Some error occured' });
+                return;
             }
             else {
                 const accessToken = jwt.sign({ username: payload.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2m' });
