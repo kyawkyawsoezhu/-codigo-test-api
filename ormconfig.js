@@ -1,10 +1,10 @@
-{
-   "type": "mysql",
-   "host": "localhost",
-   "port": 3306,
-   "username": "test",
-   "password": "test",
-   "database": "test",
+module.exports = {
+   "type": process.env.DB_CONNECTION,
+   "host": process.env.DB_HOST,
+   "port": process.env.DB_PORT,
+   "username": process.env.DB_DATABASE,
+   "password": process.env.DB_PASSWORD,
+   "database": process.env.DB_DATABASE,
    "synchronize": true,
    "logging": false,
    "entities": [
