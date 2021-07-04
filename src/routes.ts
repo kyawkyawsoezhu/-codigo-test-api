@@ -6,6 +6,7 @@ import voucherStoreValidator from "./validator/voucherStoreValidator";
 import orderStoreValidator from "./validator/orderStoreValidator";
 import { OrderController } from "./controller/OrderController";
 import { PaymentController } from "./controller/PaymentController";
+import { PromoCodeVerifyController } from "./controller/PromoCodeVerifyController";
 
 export const Routes = [{
     method: "get",
@@ -43,5 +44,8 @@ export const Routes = [{
 
 // ### Payments ###
 { method: "get", route: "/payments", controller: PaymentController, action: "all", middleware: jwtAuthenticate },
+
+// PromoCode
+{ method: "post", route: "/promocode/verify", controller: PromoCodeVerifyController, action: "__invoke", middleware: jwtAuthenticate },
 
 ];
