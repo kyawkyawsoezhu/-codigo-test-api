@@ -35,17 +35,17 @@ export class TokenController {
         const token = authHeader && authHeader.split(' ')[1];
 
         if (token == null) {
-            response.json({ message: 'Invalid refresh token' });
+            response.statStatus(401)
             return;
         }
 
         jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
             if (err) {
-                response.json({ message: 'Some error occured' });
+                response.statStatus(401);
                 return;
             }
             else {
-                const accessToken = jwt.sign({ username: payload.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2m' });
+                const accessToken = jwt.sign({ username: payload.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRES_IN });
                 response.json({ accessToken: accessToken });
             }
         });

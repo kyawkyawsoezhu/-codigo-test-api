@@ -1,5 +1,7 @@
 import { UserController } from "./controller/UserController";
 import { TokenController } from "./controller/TokenController";
+import { VoucherController } from "./controller/VoucherController";
+import jwtAuthenticate from "./middleware/jwtAuthenticate";
 
 export const Routes = [{
     method: "get",
@@ -24,7 +26,9 @@ export const Routes = [{
 },
 
 { method: "post", route: "/tokens", controller: TokenController, action: "save" },
-{ method: "put", route: "/tokens", controller: TokenController, action: "update" }
+{ method: "put", route: "/tokens", controller: TokenController, action: "update" },
+
+{ method: "get", route: "/vouchers", controller: VoucherController, action: "all", middleware: jwtAuthenticate }
 
 
 ];
