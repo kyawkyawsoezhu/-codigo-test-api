@@ -1,4 +1,4 @@
-import { Column, PrimaryGeneratedColumn, Entity, Timestamp, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Column, PrimaryGeneratedColumn, Entity, Timestamp, CreateDateColumn, UpdateDateColumn, OneToMany, BaseEntity, AfterInsert } from "typeorm";
 import { Item } from "./Item";
 
 @Entity('vouchers')
@@ -15,8 +15,8 @@ export class Voucher {
     @Column()
     expiredAt: Date;
 
-    @Column()
-    image: Buffer;
+    @Column("text")
+    image: string;
 
     @Column()
     amount: number;
@@ -36,8 +36,11 @@ export class Voucher {
     @Column()
     limitPerUser: number;
 
-    @Column()
-    discountPayment: string;
+    @Column({
+        type: "enum",
+        enum: ["creditCards", "cash"],
+    })
+    discountPayment: "creditCards" | "cash";
 
     @Column()
     discountValue: number;
@@ -50,4 +53,10 @@ export class Voucher {
 
     @OneToMany(() => Item, item => item.vocher)
     items: Item[];
+
+    @AfterInsert()
+    callPromoCodeService() {
+        console.log("call Promo Codes.....");
+        console.log(`generate ${this.quantity} promo codes for ${this.title}`);
+    }
 }
