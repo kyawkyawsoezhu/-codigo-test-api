@@ -23,7 +23,7 @@ export class TokenController {
             return;
         }
 
-        const accessToken = jwt.sign({ username: request.body.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2m' });
+        const accessToken = jwt.sign({ username: request.body.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRES_IN });
         const refreshToken = jwt.sign({ username: request.body.username }, process.env.REFRESH_TOKEN_SECRET);
 
         response.json({ accessToken, refreshToken })
@@ -35,13 +35,13 @@ export class TokenController {
         const token = authHeader && authHeader.split(' ')[1];
 
         if (token == null) {
-            response.statStatus(401)
+            response.setStatus(401)
             return;
         }
 
         jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
             if (err) {
-                response.statStatus(401);
+                response.setStatus(401);
                 return;
             }
             else {

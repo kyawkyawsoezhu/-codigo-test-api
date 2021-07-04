@@ -1,5 +1,6 @@
 import { Column, PrimaryGeneratedColumn, Entity, Timestamp, CreateDateColumn, UpdateDateColumn, OneToMany, BaseEntity, AfterInsert } from "typeorm";
 import { Item } from "./Item";
+import axios from "axios";
 
 @Entity('vouchers')
 export class Voucher {
@@ -9,13 +10,13 @@ export class Voucher {
     @Column()
     title: string;
 
-    @Column()
+    @Column({ nullable: true })
     description: string;
 
     @Column()
     expiredAt: Date;
 
-    @Column("text")
+    @Column({ nullable: true })
     image: string;
 
     @Column()
@@ -24,7 +25,7 @@ export class Voucher {
     @Column()
     quantity: number;
 
-    @Column()
+    @Column({ default: true })
     isActive: boolean;
 
     @Column({
@@ -51,12 +52,12 @@ export class Voucher {
     @UpdateDateColumn()
     updatedAt: Date
 
-    @OneToMany(() => Item, item => item.vocher)
+    @OneToMany(() => Item, item => item.voucher)
     items: Item[];
 
     @AfterInsert()
     callPromoCodeService() {
-        console.log("call Promo Codes.....");
-        console.log(`generate ${this.quantity} promo codes for ${this.title}`);
+        console.log("call Promo Codes generator.....");
+        axios.post(process.env.PROMOCODE_SERVICE_URL, { voucherId: this.id })
     }
 }

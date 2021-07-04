@@ -13,9 +13,13 @@ export class Item {
     })
     code: string;
 
+    // "6Digit5Alphabets"
+    @Column('text')
+    qrImage: string;
+
     @CreateDateColumn()
     createdAt: Date
 
-    @ManyToOne(() => Voucher, vocher => vocher.items)
-    vocher: Voucher;
+    @ManyToOne(() => Voucher, voucher => voucher.items)
+    voucher: Voucher;
 }
