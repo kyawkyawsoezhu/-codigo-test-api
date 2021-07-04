@@ -5,6 +5,7 @@ import jwtAuthenticate from "./middleware/jwtAuthenticate";
 import voucherStoreValidator from "./validator/voucherStoreValidator";
 import orderStoreValidator from "./validator/orderStoreValidator";
 import { OrderController } from "./controller/OrderController";
+import { PaymentController } from "./controller/PaymentController";
 
 export const Routes = [{
     method: "get",
@@ -39,4 +40,8 @@ export const Routes = [{
 
 // ### Order ###
 { method: "post", route: "/orders", controller: OrderController, action: "save", middleware: [jwtAuthenticate, orderStoreValidator] },
+
+// ### Payments ###
+{ method: "get", route: "/payments", controller: PaymentController, action: "all", middleware: jwtAuthenticate },
+
 ];
