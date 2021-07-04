@@ -30,7 +30,8 @@ export const Routes = [{
 { method: "put", route: "/tokens", controller: TokenController, action: "update" },
 
 { method: "get", route: "/vouchers", controller: VoucherController, action: "all", middleware: jwtAuthenticate },
-{ method: "post", route: "/vouchers", controller: VoucherController, action: "save", middleware: [jwtAuthenticate, voucherStoreValidator] }
+{ method: "post", route: "/vouchers", controller: VoucherController, action: "save", middleware: [jwtAuthenticate, voucherStoreValidator] },
+{ method: "get", route: "/vouchers/:id", controller: VoucherController, action: "one", middleware: jwtAuthenticate }
 
 
 ];
