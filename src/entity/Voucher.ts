@@ -39,9 +39,9 @@ export class Voucher {
 
     @Column({
         type: "enum",
-        enum: ["creditCards", "cash"],
+        enum: ["creditCard", "cash"],
     })
-    discountPayment: "creditCards" | "cash";
+    discountPayment: "creditCard" | "cash";
 
     @Column()
     discountValue: number;

@@ -10,9 +10,9 @@ export class Order {
 
     @Column({
         type: "enum",
-        enum: ["creditCards, cash"],
+        enum: ["creditCard", "cash"],
     })
-    paymentMethod: "creditCards" | " cash"
+    paymentMethod: "creditCard" | "cash"
 
     @Column()
     price: number
