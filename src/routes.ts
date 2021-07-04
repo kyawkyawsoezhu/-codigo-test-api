@@ -40,6 +40,7 @@ export const Routes = [{
 { method: "get", route: "/vouchers/:id", controller: VoucherController, action: "one", middleware: jwtAuthenticate },
 
 // ### Order ###
+{ method: "get", route: "/orders", controller: OrderController, action: "all", middleware: jwtAuthenticate },
 { method: "post", route: "/orders", controller: OrderController, action: "save", middleware: [jwtAuthenticate, orderStoreValidator] },
 
 // ### Payments ###

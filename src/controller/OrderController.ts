@@ -9,6 +9,11 @@ export class OrderController {
     private orderRepository = getRepository(Order);
     private itemRepository = getRepository(Item);
 
+
+    async all(request: Request, response: Response, next: NextFunction) {
+        return this.orderRepository.find();
+    }
+
     async save(request: Request, response: Response, next: NextFunction) {
 
         const voucher = await this.voucherRepository.findOne({ where: { id: request.body.voucherId, isActive: true, quantity: Not(0) } });
