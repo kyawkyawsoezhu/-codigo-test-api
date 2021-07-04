@@ -2,14 +2,14 @@ const { body, validationResult, } = require('express-validator')
 
 export default [
     body('title').notEmpty(),
-    body('expiredAt').notEmpty(),
+    body('expiredAt').notEmpty().isDate(),
     body('amount').notEmpty(),
     body('quantity').notEmpty(),
-    body('type').notEmpty(),
+    body('type').notEmpty().isIn(['myself','gift']),
     body('limitPerUser').notEmpty(),
-    body('discountPayment').notEmpty(),
+    body('discountPayment').notEmpty().isIn(['cash','creditCard']),
     body('discountValue').notEmpty(),
-    body('isActive').isBoolean(),
+    body('isActive').optional().toBoolean(),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

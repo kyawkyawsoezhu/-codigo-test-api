@@ -23,8 +23,8 @@ export class TokenController {
             return;
         }
 
-        const accessToken = jwt.sign({ username: request.body.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRES_IN });
-        const refreshToken = jwt.sign({ username: request.body.username }, process.env.REFRESH_TOKEN_SECRET);
+        const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRES_IN });
+        const refreshToken = jwt.sign({ id: user.id, username: user.username }, process.env.REFRESH_TOKEN_SECRET);
 
         response.json({ accessToken, refreshToken })
     }

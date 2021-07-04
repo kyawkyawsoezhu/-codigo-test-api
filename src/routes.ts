@@ -3,6 +3,8 @@ import { TokenController } from "./controller/TokenController";
 import { VoucherController } from "./controller/VoucherController";
 import jwtAuthenticate from "./middleware/jwtAuthenticate";
 import voucherStoreValidator from "./validator/voucherStoreValidator";
+import orderStoreValidator from "./validator/orderStoreValidator";
+import { OrderController } from "./controller/OrderController";
 
 export const Routes = [{
     method: "get",
@@ -26,12 +28,15 @@ export const Routes = [{
     action: "remove"
 },
 
+// ### Token ###
 { method: "post", route: "/tokens", controller: TokenController, action: "save" },
 { method: "put", route: "/tokens", controller: TokenController, action: "update" },
 
+// ### Voucher ###
 { method: "get", route: "/vouchers", controller: VoucherController, action: "all", middleware: jwtAuthenticate },
 { method: "post", route: "/vouchers", controller: VoucherController, action: "save", middleware: [jwtAuthenticate, voucherStoreValidator] },
-{ method: "get", route: "/vouchers/:id", controller: VoucherController, action: "one", middleware: jwtAuthenticate }
+{ method: "get", route: "/vouchers/:id", controller: VoucherController, action: "one", middleware: jwtAuthenticate },
 
-
+// ### Order ###
+{ method: "post", route: "/orders", controller: OrderController, action: "save", middleware: [jwtAuthenticate, orderStoreValidator] },
 ];

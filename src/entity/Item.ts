@@ -17,6 +17,9 @@ export class Item {
     @Column('text')
     qrImage: string;
 
+    @Column({ default: false })
+    isSold: boolean;
+
     @CreateDateColumn()
     createdAt: Date
 
